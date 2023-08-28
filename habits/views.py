@@ -1,8 +1,9 @@
 from rest_framework import viewsets
-from rest_framework.permissions import IsAuthenticatedOrReadOnly, IsAuthenticated
+
 
 from habits.models import Habit, Place
 from habits.paginators import HabitsPaginator, PlacesPaginator
+from habits.permissions import IsOwner, IsPublic
 from habits.serializers import HabitSerializer, PlacesSerializer
 
 
@@ -13,7 +14,7 @@ class HabitsViewSet(viewsets.ModelViewSet):
     serializer_class = HabitSerializer
     pagination_class = HabitsPaginator
     queryset = Habit.objects.all()
-    permission_classes = [IsAuthenticated]
+    permission_classes = [IsOwner, IsPublic]
 
 
 class PlacesViewSet(viewsets.ModelViewSet):
@@ -23,4 +24,4 @@ class PlacesViewSet(viewsets.ModelViewSet):
     serializer_class = PlacesSerializer
     pagination_class = PlacesPaginator
     queryset = Place.objects.all()
-    permission_classes = [IsAuthenticated]
+    permission_classes = [IsOwner]

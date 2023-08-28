@@ -19,8 +19,11 @@ class PleasantAndRewardValidator:
 
 
 class DurationValidator:
-    """Проверка длительности выполнения привычки"""
+    def __init__(self, value):
+        self.value = value
+        """Проверка длительности выполнения привычки"""
     def __call__(self, value):
+        print(value)
         if value > 120:
             raise ValidationError(
                 'Время выполнения должно быть не больше 120 секунд'
@@ -39,3 +42,15 @@ class PleasantValidator:
             raise ValidationError(
                 "Связанная привычка должна быть приятной"
             )
+
+
+class PeriodValidator:
+    """Период выполнения привычки"""
+    def __call__(self, value):
+        if value > 7:
+            raise ValidationError(
+                "Период не должен превышать 7 дней.")
+        if value == 0:
+            raise ValidationError(
+                "Период не может быть равен 0")
+        return value
