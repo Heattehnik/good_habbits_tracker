@@ -13,6 +13,7 @@ class HabitsViewSet(viewsets.ModelViewSet):
     serializer_class = HabitSerializer
     pagination_class = HabitsPaginator
     queryset = Habit.objects.all()
+    permission_classes = [IsAuthenticated]
 
 
 class PlacesViewSet(viewsets.ModelViewSet):

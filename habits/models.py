@@ -20,7 +20,7 @@ class Habit(models.Model):
     time = models.TimeField(auto_now_add=True, verbose_name="Время")
     action = models.CharField(max_length=100, verbose_name="Действие")
     is_pleasant = models.BooleanField(default=False, verbose_name="Приятная")
-    is_related = models.ForeignKey('Habit', on_delete=models.SET_NULL, verbose_name="Связанная", **NULLABLE)
+    related = models.ForeignKey('Habit', on_delete=models.SET_NULL, verbose_name="Связанная", **NULLABLE)
     period = models.IntegerField(default=0, verbose_name="Период")
     reward = models.CharField(max_length=100, verbose_name="Вознаграждение")
     duration = models.IntegerField(default=0, verbose_name="Длительность в секундах")
