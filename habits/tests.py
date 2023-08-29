@@ -19,7 +19,7 @@ class HabitCRUDTest(TestCase):
             'reward': 'Test Reward',
             'duration': 100,
         }
-        habit = Habit.objects.create(**habit_data)
+        Habit.objects.create(**habit_data)
         self.assertEqual(Habit.objects.count(), 1)
 
     def test_read_habit(self):
@@ -62,6 +62,3 @@ class HabitCRUDTest(TestCase):
         habit = Habit.objects.create(**habit_data)
         habit.delete()
         self.assertEqual(Habit.objects.count(), 0)
-
-
-
