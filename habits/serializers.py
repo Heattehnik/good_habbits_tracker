@@ -16,10 +16,10 @@ class HabitSerializer(serializers.ModelSerializer):
 
     class Meta:
         validators = [
-            PleasantAndRewardValidator(),
-            DurationValidator(value='duration'),
-            PleasantValidator(),
-            PeriodValidator(),
+            PleasantAndRewardValidator(field='is_pleasant'),
+            DurationValidator(field='duration'),
+            PleasantValidator(field='is_pleasant'),
+            PeriodValidator(field='period'),
         ]
         model = Habit
         fields = '__all__'
