@@ -26,16 +26,16 @@ class DurationValidator:
         self.field = field
         """Проверка длительности выполнения привычки"""
     def __call__(self, value):
-        print(dict(value))
-        if dict(value).get(self.field) > 120:
-            raise ValidationError(
-                'Время выполнения должно быть не больше 120 секунд'
-            )
+        if dict(value).get(self.field):
+            if dict(value).get(self.field) > 120:
+                raise ValidationError(
+                    'Время выполнения должно быть не больше 120 секунд'
+                )
 
-        elif dict(value).get(self.field) == 0:
-            raise ValidationError(
-                'Значение должно быть больше 0'
-            )
+            elif dict(value).get(self.field) == 0:
+                raise ValidationError(
+                    'Значение должно быть больше 0'
+                )
 
 
 class PleasantValidator:
@@ -56,10 +56,11 @@ class PeriodValidator:
         self.field = field
 
     def __call__(self, value):
-        if dict(value).get(self.field) > 7:
-            raise ValidationError(
-                "Период не должен превышать 7 дней.")
-        if dict(value).get(self.field) == 0:
-            raise ValidationError(
-                "Период не может быть равен 0")
-        return value
+        if dict(value).get(self.field):
+            if dict(value).get(self.field) > 7:
+                raise ValidationError(
+                    "Период не должен превышать 7 дней.")
+            if dict(value).get(self.field) == 0:
+                raise ValidationError(
+                    "Период не может быть равен 0")
+            return value
