@@ -1,6 +1,11 @@
 from rest_framework import serializers
 from habits.models import Habit, Place
-from habits.validators import PleasantAndRewardValidator, DurationValidator, PleasantValidator, PeriodValidator
+from habits.validators import (
+    PleasantAndRewardValidator,
+    DurationValidator,
+    PleasantValidator,
+    PeriodValidator,
+)
 
 
 class HabitSerializer(serializers.ModelSerializer):
@@ -9,32 +14,33 @@ class HabitSerializer(serializers.ModelSerializer):
     """
 
     def create(self, validated_data):
-        user = self.context['request'].user
-        validated_data['user'] = user
+        user = self.context["request"].user
+        validated_data["user"] = user
         habit = Habit.objects.create(**validated_data)
         return habit
 
     class Meta:
         validators = [
-            PleasantAndRewardValidator(field='is_pleasant'),
-            DurationValidator(field='duration'),
-            PleasantValidator(field='is_pleasant'),
-            PeriodValidator(field='period'),
+            PleasantAndRewardValidator(field="is_pleasant"),
+            DurationValidator(field="duration"),
+            PleasantValidator(field="is_pleasant"),
+            PeriodValidator(field="period"),
         ]
         model = Habit
-        fields = '__all__'
+        fields = "__all__"
 
 
 class PlacesSerializer(serializers.ModelSerializer):
     """
     Serializer for Places model
     """
+
     def create(self, validated_data):
-        user = self.context['request'].user
-        validated_data['user'] = user
+        user = self.context["request"].user
+        validated_data["user"] = user
         place = Place.objects.create(**validated_data)
         return place
 
     class Meta:
         model = Place
-        fields = '__all__'
+        fields = "__all__"

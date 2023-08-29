@@ -11,19 +11,23 @@ class HabitsViewSet(viewsets.ModelViewSet):
     """
     API endpoint that allows users to be viewed or edited habits.
     """
+
     serializer_class = HabitSerializer
     pagination_class = HabitsPaginator
     queryset = Habit.objects.all()
     permission_classes = [IsOwner, IsPublic]
 
     def get_queryset(self):
-        return Habit.objects.filter(Q(user=self.request.user) | Q(is_public=True))
+        return Habit.objects.filter(
+            Q(user=self.request.user) | Q(is_public=True)
+        )
 
 
 class PlacesViewSet(viewsets.ModelViewSet):
     """
     API endpoint that allows users to be viewed or edited places.
     """
+
     serializer_class = PlacesSerializer
     pagination_class = PlacesPaginator
     queryset = Place.objects.all()

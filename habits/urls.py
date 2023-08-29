@@ -1,4 +1,3 @@
-from django.urls import path
 from habits.apps import HabitsConfig
 from rest_framework.routers import DefaultRouter
 from habits.views import HabitsViewSet, PlacesViewSet
