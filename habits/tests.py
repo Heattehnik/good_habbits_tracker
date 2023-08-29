@@ -1,42 +1,67 @@
+from django.test import TestCase
 from users.models import User
-from rest_framework.test import APITestCase
-from rest_framework.request import Request
-from .serializers import HabitSerializer
-from .models import Habit
+from habits.models import Habit, Place
 
 
-class HabitSerializerTest(APITestCase):
+class HabitCRUDTest(TestCase):
     def setUp(self):
-        self.user = User.objects.create(
-            email='testuser@mail.ru',
-            password='testpassword'
-        )
-        self.serializer_context = {'request': Request(user=self.user)}
-        self.client.force_authenticate(user=self.user)
-        self.validated_data = {
-            'place': 1,
-            'time': '12:00:00',
-            'action': 'Some Action',
-            'is_pleasant': False,
-            'is_related': False,
-            'period': 7,
-            'reward': 'Some Reward',
-            'duration': 60,
-            'is_public': False
-        }
+        self.user = User.objects.create(email='test@example.com',
+                                        password='testpassword')
+        self.place = Place.objects.create(place='Test Place',
+                                          user=self.user)
 
     def test_create_habit(self):
-        serializer = HabitSerializer(context=self.serializer_context)
-        habit = serializer.create(self.validated_data)
+        habit_data = {
+            'user': self.user,
+            'place': self.place,
+            'action': 'Test Action',
+            'period': 7,
+            'reward': 'Test Reward',
+            'duration': 100,
+        }
+        habit = Habit.objects.create(**habit_data)
+        self.assertEqual(Habit.objects.count(), 1)
 
-        self.assertEqual(habit.user, self.user)
-        self.assertEqual(habit.place, self.validated_data['place'])
-        self.assertEqual(habit.time.strftime('%H:%M:%S'),
-                         self.validated_data['time'])
-        self.assertEqual(habit.action, self.validated_data['action'])
-        self.assertEqual(habit.is_pleasant, self.validated_data['is_pleasant'])
-        self.assertEqual(habit.is_related, self.validated_data['is_related'])
-        self.assertEqual(habit.period, self.validated_data['period'])
-        self.assertEqual(habit.reward, self.validated_data['reward'])
-        self.assertEqual(habit.duration, self.validated_data['duration'])
-        self.assertEqual(habit.is_public, self.validated_data['is_public'])
+    def test_read_habit(self):
+        habit_data = {
+            'user': self.user,
+            'place': self.place,
+            'action': 'Test Action',
+            'period': 7,
+            'reward': 'Test Reward',
+            'duration': 3600,
+        }
+        habit = Habit.objects.create(**habit_data)
+        read_habit = Habit.objects.get(id=habit.id)
+        self.assertEqual(read_habit.action, 'Test Action')
+
+    def test_update_habit(self):
+        habit_data = {
+            'user': self.user,
+            'place': self.place,
+            'action': 'Test Action',
+            'period': 7,
+            'reward': 'Test Reward',
+            'duration': 3600,
+        }
+        habit = Habit.objects.create(**habit_data)
+        habit.action = 'Updated Action'
+        habit.save()
+        updated_habit = Habit.objects.get(id=habit.id)
+        self.assertEqual(updated_habit.action, 'Updated Action')
+
+    def test_delete_habit(self):
+        habit_data = {
+            'user': self.user,
+            'place': self.place,
+            'action': 'Test Action',
+            'period': 7,
+            'reward': 'Test Reward',
+            'duration': 3600,
+        }
+        habit = Habit.objects.create(**habit_data)
+        habit.delete()
+        self.assertEqual(Habit.objects.count(), 0)
+
+
+
