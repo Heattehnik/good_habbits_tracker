@@ -5,6 +5,7 @@ from habits.models import Habit, Place
 from habits.paginators import HabitsPaginator, PlacesPaginator
 from habits.permissions import IsOwner, IsPublic
 from habits.serializers import HabitSerializer, PlacesSerializer
+from habits.services import set_schedule
 
 
 class HabitsViewSet(viewsets.ModelViewSet):
@@ -21,6 +22,12 @@ class HabitsViewSet(viewsets.ModelViewSet):
         return Habit.objects.filter(
             Q(user=self.request.user) | Q(is_public=True)
         )
+
+    def perform_create(self, serializer):
+        new_habit = serializer.save()
+        new_habit.creator = self.request.user
+        new_habit.save()
+        set_schedule(new_habit)
 
 
 class PlacesViewSet(viewsets.ModelViewSet):
