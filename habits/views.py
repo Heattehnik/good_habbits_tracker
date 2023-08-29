@@ -1,5 +1,5 @@
 from rest_framework import viewsets
-
+from django.db.models import Q
 
 from habits.models import Habit, Place
 from habits.paginators import HabitsPaginator, PlacesPaginator
@@ -15,6 +15,9 @@ class HabitsViewSet(viewsets.ModelViewSet):
     pagination_class = HabitsPaginator
     queryset = Habit.objects.all()
     permission_classes = [IsOwner, IsPublic]
+
+    def get_queryset(self):
+        return Habit.objects.filter(Q(user=self.request.user) | Q(is_public=True))
 
 
 class PlacesViewSet(viewsets.ModelViewSet):
