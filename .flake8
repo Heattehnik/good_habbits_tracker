@@ -1,0 +1,2 @@
+[flake8]
+exclude = config/*, venv/*, habits/migrations/*, users/migrations/*, manage.py
