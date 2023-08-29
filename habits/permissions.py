@@ -17,7 +17,7 @@ class IsPublic(BasePermission):
     def has_object_permission(self, request, view, obj):
         if obj.is_public:
             return True
-        elif not obj.public and obj.user != request.user:
+        elif not obj.is_public and obj.user != request.user:
             return False
         else:
-            return False
+            return True
